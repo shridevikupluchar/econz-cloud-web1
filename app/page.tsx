@@ -11,7 +11,7 @@ import WhatWeDo from "@/components/WhatWeDo/WhatWeDo";
 import Values from "@/components/sections/Values";
 import ClientVoices from "@/components/ClientVoices/ClientVoices";
 import Partners from "@/components/sections/Partners";
-import CtaBanner from "@/components/sections/CtaBanner";
+import CtaBanner from "@/components/CtaBanner/CtaBanner";
 
 export default function Page() {
   return (
