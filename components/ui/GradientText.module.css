@@ -1,0 +1,8 @@
+.grad {
+  background: var(--gradient-text);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% 200%;
+  animation: ec-grad 5s ease infinite;
+}

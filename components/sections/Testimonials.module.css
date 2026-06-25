@@ -1,0 +1,80 @@
+.section {
+  position: relative;
+  z-index: 1;
+  padding: 6rem var(--gutter);
+}
+
+.inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+}
+
+.header {
+  margin-bottom: 3.5rem;
+  text-align: center;
+}
+
+.h2 {
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+}
+
+.masonry {
+  columns: 320px;
+  column-gap: 1.5rem;
+}
+
+.card {
+  break-inside: avoid;
+  margin-bottom: 1.5rem;
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  transition: border-color 0.3s;
+}
+
+.card:hover {
+  border-color: var(--border-accent);
+}
+
+.quote {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  line-height: 1.75;
+  font-style: italic;
+}
+
+.author {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--gradient-logo);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1rem;
+  color: white;
+  flex-shrink: 0;
+}
+
+.authorName {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--text-strong);
+}
+
+.authorRole {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+}

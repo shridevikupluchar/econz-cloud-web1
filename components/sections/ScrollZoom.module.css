@@ -1,0 +1,138 @@
+.track {
+  position: relative;
+  z-index: 1;
+  height: 340vh;
+}
+
+.stage {
+  --p: 0;
+  --pe: calc(var(--p) * var(--p) * (3 - 2 * var(--p)));
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  /* background: radial-gradient(ellipse at center, #0b1430, var(--bg) 70%); */
+}
+
+/* Shared layout only — transform/opacity driven per-element below */
+.grid,
+.outer {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  transform-origin: center;
+  will-change: transform, opacity;
+}
+
+.grid {
+  --mid: calc(1 - max(var(--pe) - 0.5, -1 * (var(--pe) - 0.5)) * 2);
+  transform: scale(calc(1 + var(--mid) * 6));
+  opacity: calc(1.1 - var(--mid) * 1.9);
+  background-image:
+    linear-gradient(rgba(94, 198, 240, 0.18) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(94, 198, 240, 0.18) 1px, transparent 1px);
+  background-size: 56px 56px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, #000 40%, transparent 80%);
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, #000 40%, transparent 80%);
+}
+
+.outer {
+  --mid: calc(1 - max(var(--pe) - 0.5, -1 * (var(--pe) - 0.5)) * 2);
+  transform: scale(calc(1 + var(--mid) * 9));
+  opacity: calc(1.15 - var(--mid) * 2.3);
+}
+
+.outerHeading {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(48px, 11vw, 150px);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  text-align: center;
+}
+
+/* Inner statement — peaks at midpoint, fades toward both ends */
+.reveal {
+  position: relative;
+  z-index: 2;
+  max-width: 720px;
+  padding: 0 var(--gutter);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  --dist: max(0, calc((0.42 - max(var(--pe) - 0.5, -1 * (var(--pe) - 0.5))) * 4));
+  opacity: min(1, var(--dist));
+  transform: scale(calc(0.8 + min(1, var(--dist)) * 0.2));
+  will-change: transform, opacity;
+}
+
+.revealHeading {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(26px, 4vw, 46px);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--text-strong);
+}
+
+.revealBody {
+  margin: 0;
+  color: var(--text-dim);
+  font-size: clamp(15px, 1.6vw, 18px);
+  line-height: 1.6;
+}
+
+.chips {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.chip {
+  padding: 8px 16px;
+  border-radius: var(--radius-pill);
+  font-size: 13px;
+  font-weight: 700;
+  color: #9fe9ff;
+  background: rgba(34, 211, 238, 0.12);
+  border: 1px solid rgba(34, 211, 238, 0.25);
+}
+
+/* Reduced motion / no-JS: static, non-pinned, inner content only */
+.track[data-reduced="true"] {
+  height: auto;
+}
+
+.track[data-reduced="true"] .stage {
+  position: static;
+  height: auto;
+  min-height: 60vh;
+  padding: clamp(60px, 10vh, 120px) 0;
+}
+
+.track[data-reduced="true"] .grid,
+.track[data-reduced="true"] .outer {
+  display: none;
+}
+
+.track[data-reduced="true"] .reveal {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grid,
+  .outer,
+  .reveal {
+    transition: none;
+  }
+}
