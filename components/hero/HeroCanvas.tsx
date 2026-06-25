@@ -41,22 +41,25 @@ function drawMesh(
   const REP = 130 * dpr;
 
   for (const p of pts) {
-    const dx = p.x - mx;
-    const dy = p.y - my;
-    const dist = Math.sqrt(dx * dx + dy * dy);
-    if (dist < REP && dist > 0) {
-      const force = (1 - dist / REP) * 0.8;
-      p.vx += (dx / dist) * force;
-      p.vy += (dy / dist) * force;
-    }
-    p.vx *= 0.98;
-    p.vy *= 0.98;
+    // constant drift every frame, unconditionally
     p.x += p.vx;
     p.y += p.vy;
     if (p.x < 0) { p.x = 0; p.vx *= -1; }
     if (p.x > w) { p.x = w; p.vx *= -1; }
     if (p.y < 0) { p.y = 0; p.vy *= -1; }
     if (p.y > h) { p.y = h; p.vy *= -1; }
+
+    // optional repulsion: pushes position directly, only while pointer is over canvas
+    if (mx > -9000) {
+      const dx = p.x - mx;
+      const dy = p.y - my;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < REP && dist > 0) {
+        const force = (1 - dist / REP) * 1.1;
+        p.x += (dx / dist) * force;
+        p.y += (dy / dist) * force;
+      }
+    }
   }
 
   for (let i = 0; i < pts.length; i++) {
@@ -202,10 +205,12 @@ export default function HeroCanvas({ variant }: HeroCanvasProps) {
       mx = (e.clientX - rect.left) * dpr;
       my = (e.clientY - rect.top) * dpr;
     };
+    const onMouseLeave = () => { mx = -9999; my = -9999; };
 
     resize();
     window.addEventListener("resize", resize);
     canvas.addEventListener("mousemove", onMouseMove);
+    canvas.addEventListener("mouseleave", onMouseLeave);
 
     if (reduced) {
       if (variant === "mesh") {
@@ -216,6 +221,7 @@ export default function HeroCanvas({ variant }: HeroCanvasProps) {
       return () => {
         window.removeEventListener("resize", resize);
         canvas.removeEventListener("mousemove", onMouseMove);
+        canvas.removeEventListener("mouseleave", onMouseLeave);
       };
     }
 
@@ -235,6 +241,7 @@ export default function HeroCanvas({ variant }: HeroCanvasProps) {
       cancelAnimationFrame(rafId);
       window.removeEventListener("resize", resize);
       canvas.removeEventListener("mousemove", onMouseMove);
+      canvas.removeEventListener("mouseleave", onMouseLeave);
     };
   }, [variant, reduced]);
 
